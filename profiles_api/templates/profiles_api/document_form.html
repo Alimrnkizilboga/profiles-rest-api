@@ -1,0 +1,57 @@
+{% extends 'profiles_api/base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 900px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-secondary">Yeni Doküman Oluştur</h2>
+        <a href="{% url 'index' %}" class="btn btn-outline-secondary btn-sm">
+            <span class="material-icons" style="font-size: 16px; vertical-align: middle;">arrow_back</span> Vazgeç
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-muted">Doküman Başlığı</label>
+                    <input type="text"
+                           name="title"
+                           class="form-control form-control-lg"
+                           required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-muted">İçerik</label>
+                    <textarea name="content" id="editor"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary px-5 shadow-sm">
+                        <span class="material-icons" style="font-size: 18px; vertical-align: middle;">save</span> Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+    // editoru baslatirken placeholder ayarini sildim
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+<style>
+
+    .ck-editor__editable_inline {
+        min-height: 350px;
+    }
+</style>
+{% endblock %}

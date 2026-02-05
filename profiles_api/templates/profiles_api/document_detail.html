@@ -1,0 +1,52 @@
+{% extends 'profiles_api/base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 900px;">
+    <div class="mb-3">
+        <a href="{% url 'index' %}" class="text-decoration-none text-secondary">
+            <span class="material-icons" style="font-size: 14px; vertical-align: middle;">arrow_back_ios</span>
+            Listeye Dön
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-muted">Başlık</label>
+                    <input type="text" name="title" class="form-control form-control-lg fw-bold" value="{{ document.title }}">
+                </div>
+
+                <div class="mb-4">
+                    <textarea name="content" id="editor">{{ document.content }}</textarea>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Son düzenleme: {{ document.updated_at|date:"d M Y H:i" }}</span>
+
+                    <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                        <span class="material-icons" style="font-size: 18px; vertical-align: middle;">save</span> Değişiklikleri Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+<style>
+    .ck-editor__editable_inline {
+        min-height: 400px;
+    }
+</style>
+{% endblock %}

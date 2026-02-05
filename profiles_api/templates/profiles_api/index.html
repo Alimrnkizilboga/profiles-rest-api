@@ -1,0 +1,54 @@
+{% extends 'profiles_api/base.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-secondary">Dokümanlarım</h2>
+        <a href="{% url 'document_create' %}" class="btn btn-primary shadow-sm">
+            <span style="font-size:1.2rem; vertical-align:middle;">+</span> Yeni Oluştur
+        </a>
+    </div>
+
+    <div class="row">
+        {% for doc in documents %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm hover-shadow" style="transition: transform 0.2s;">
+
+                    <a href="{% url 'document_detail' doc.pk %}" class="text-decoration-none text-reset">
+                        <div class="card-body" style="cursor: pointer;">
+                            <h5 class="card-title text-truncate fw-bold" style="color: #333;">
+                                {{ doc.title }}
+                            </h5>
+                            <p class="card-text text-muted small">
+                                {{ doc.content|striptags|truncatechars:100 }}
+                            </p>
+                        </div>
+                    </a>
+
+                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
+                        <small class="text-muted" style="font-size: 0.8rem;">
+                            {{ doc.created_at|date:"d M Y" }}
+                        </small>
+
+                        <a href="{% url 'document_delete' doc.pk %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bu dökümanı silmek istediğine emin misin?')">
+                            <span class="material-icons" style="font-size: 16px; vertical-align: middle;">delete</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center mt-5">
+                <div class="p-5 bg-white rounded shadow-sm">
+                    <h3 class="text-muted">Henüz hiç dokümanınız yok.</h3>
+                    <p>Hemen sağ üstteki butona basarak yeni bir tane oluşturun!</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <style>
+        .hover-shadow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+    </style>
+{% endblock %}
