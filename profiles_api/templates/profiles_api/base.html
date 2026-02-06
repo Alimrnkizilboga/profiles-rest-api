@@ -61,17 +61,21 @@
 
     <nav class="navbar fixed-top d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
+            {% if user.is_authenticated %}
             <button class="menu-btn me-2" id="sidebarToggle"><span class="material-icons">menu</span></button>
+            {% endif %}
 
             <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}" style="color: #5f6368; font-size: 22px;">
                 <span class="material-icons me-2" style="color:#d81b60; font-size: 32px;">spa</span> Lotus Docs
             </a>
         </div>
 
+        {% if user.is_authenticated %}
         <div class="search-bar-container d-none d-md-flex">
             <span class="material-icons text-muted">search</span>
             <input type="text" id="searchInput" placeholder="Dokümanlarda ara...">
         </div>
+        {% endif %}
 
         <div class="d-flex align-items-center">
             {% if user.is_authenticated %}
@@ -89,6 +93,7 @@
         </div>
     </nav>
 
+    {% if user.is_authenticated %}
     <div class="sidebar" id="sidebar">
         <a href="{% url 'index' %}" class="sidebar-item active-link">
             <span class="material-icons">description</span> Dokümanlarım
@@ -101,6 +106,7 @@
             <span class="material-icons" style="color: #d93025;">logout</span> Çıkış Yap
         </a>
     </div>
+    {% endif %}
 
     <div class="container-fluid px-5" style="margin-top: 100px;">
         {% block content %}{% endblock %}
@@ -113,24 +119,20 @@
         const toggleBtn = document.getElementById('sidebarToggle');
         const sidebar = document.getElementById('sidebar');
 
+        // toggleBtn varsa çalışsın (misafir kullanıcıda btn yok çünkü)
         if(toggleBtn){
             toggleBtn.addEventListener('click', () => {
-                // console.log("tiklandi");
                 sidebar.classList.toggle('active');
             });
         }
 
         // canli arama yapma (filtreleme)
-        // veritabanina sorgu atmiyor, sayfadakileri gizliyor
         const searchInput = document.getElementById('searchInput');
         if(searchInput) {
             searchInput.addEventListener('keyup', function() {
                 const filter = this.value.toLowerCase();
-                // console.log(filter);
-
                 document.querySelectorAll('.card').forEach(card => {
                     const text = card.textContent.toLowerCase();
-                    // icinde gecmiyorsa gizle (d-none)
                     card.parentElement.classList.toggle('d-none', !text.includes(filter));
                 });
             });
